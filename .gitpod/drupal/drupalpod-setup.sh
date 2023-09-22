@@ -39,8 +39,9 @@ if [[ "$DP_CORE_VERSION" == 10* ]] || [[ "$DP_CORE_VERSION" == 11* ]]; then
 fi
 
 if [[ "$DP_CORE_VERSION" == 11* ]]; then
-    # admin_toolbar not compatible yet with Drupal 10
+    # admin_toolbar not compatible yet with Drupal 11
     unset DP_EXTRA_ADMIN_TOOLBAR
+    unset DP_EXTRA_DEVEL
 fi
 
 # Use PHP 8.1 for Drupal 10.0.x
@@ -311,7 +312,7 @@ PROJECTASYMLINK
         echo "$(cat composer.json | jq '.scripts."post-update-cmd" |= . + ["repos/add-project-as-symlink.sh"]')" > composer.json
 
         if [ -n "$COMPOSER_DRUPAL_LENIENT" ]; then
-            # Add composer_drupal_lenient for modules on Drupal 10
+            # Add composer_drupal_lenient for modules on Drupal 10 & 11
             cd "${GITPOD_REPO_ROOT}" && ddev composer config --merge --json extra.drupal-lenient.allowed-list '["drupal/'"$DP_PROJECT_NAME"'"]'
             cd "${GITPOD_REPO_ROOT}" && time ddev . composer require "$COMPOSER_DRUPAL_LENIENT"
         fi

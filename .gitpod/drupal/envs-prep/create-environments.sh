@@ -44,11 +44,14 @@ for d in "${allDrupalSupportedVersions[@]}"; do
   esac
 
   # @todo: update when admin_toolbar becomes compatible with Drupal 10
-  if [[ "$d" == 10* ]]; then
+  if [[ "$d" == 11* ]]; then
       unset ADMIN_TOOLBAR_PACKAGE
+      unset DEVEL_PACKAGE
   else
       export ADMIN_TOOLBAR_NAME="admin_toolbar_tools"
       export ADMIN_TOOLBAR_PACKAGE="drupal/admin_toolbar"
+      export DEVEL_NAME="devel"
+      export DEVEL_PACKAGE="drupal/devel"
   fi
 
   echo "*** composer install"
@@ -73,7 +76,7 @@ for d in "${allDrupalSupportedVersions[@]}"; do
   cd "$WORK_DIR"/"$d" && ddev composer require --dev phpspec/prophecy-phpunit:^2 drupal/core-dev:* -W --no-install
 
   cd "$WORK_DIR"/"$d" && \
-    time ddev . composer require drush/drush drupal/coder drupal/devel "$ADMIN_TOOLBAR_PACKAGE"
+    time ddev . composer require drush/drush drupal/coder "$DEVEL_PACKAGE" "$ADMIN_TOOLBAR_PACKAGE"
 
   for p in "${allProfiles[@]}"; do
     echo Building drupal-"$d"-"$p"
@@ -92,7 +95,12 @@ for d in "${allDrupalSupportedVersions[@]}"; do
         "$ADMIN_TOOLBAR_NAME"
     fi
 
-    cd "$WORK_DIR"/"$d"  && ddev drush en -y devel
+    # Enable extra modules
+    if [ -n "$DEVEL_NAME" ]; then
+        cd "$WORK_DIR"/"$d"  && \
+        ddev drush en -y \
+        "$DEVEL_NAME"
+    fi
 
     # Enable Claro as default admin theme
     echo "*** Enable Claro theme"
