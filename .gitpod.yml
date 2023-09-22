@@ -7,6 +7,7 @@ tasks:
       .gitpod/utils/send-a-message-gcs.sh > /tmp/output1.txt
       ddev debug download-images
       .gitpod/utils/ddev-in-gitpod-setup.sh
+      .gitpod/drupal/drupalpod-setup/set-default-environment.sh
     command: |
       # Temporary fix for wrong value of GITPOD_REPO_ROOT when opening a Gitpod snapshot
       # Todo: remove this when this issue is resolved - https://github.com/gitpod-io/gitpod/issues/9804
@@ -16,7 +17,7 @@ tasks:
       .gitpod/utils/ddev-in-gitpod-setup.sh
       .gitpod/utils/env-setup.sh
       .gitpod/drupal/ssh/01-check-private-ssh.sh
-      .gitpod/drupal/drupalpod-setup.sh
+      .gitpod/drupal/drupalpod-setup/drupalpod-setup.sh
 
 # VScode xdebug extension
 vscode:

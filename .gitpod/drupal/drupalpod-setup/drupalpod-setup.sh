@@ -16,7 +16,8 @@ source "$DIR/drupal_version_specifics.sh"
 source "$DIR/set_php_version.sh"
 
 # Skip setup if it already ran once and if no special setup is set by DrupalPod extension
-if [ ! -f "${GITPOD_REPO_ROOT}"/.drupalpod_initiated ] && [ -n "$DP_PROJECT_TYPE" ]; then
+if [ ! -f "${GITPOD_REPO_ROOT}"/.drupalpod_initiated ] && \
+    [ -n "$DP_PROJECT_TYPE" ] && [ -n "$DP_CORE_VERSION" ]; then
 
     # Add git.drupal.org to known_hosts
     if [ -z "$GITPOD_HEADLESS" ]; then
